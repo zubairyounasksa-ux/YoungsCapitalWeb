@@ -96,29 +96,28 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-   .footer-right-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
+    .footer-right-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
-.footer-contact {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.92);
-}
+    .footer-contact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
+    }
 
-/* WhatsApp image styling */
-.whatsapp-icon-img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  filter: brightness(1.1);
-}
+    .whatsapp-icon-img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      filter: brightness(1.1);
+    }
 
     .logo-area {
       display: flex;
@@ -538,6 +537,11 @@
       color: #7c89a5;
     }
 
+    .field-input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1) brightness(0.9);
+      cursor: pointer;
+    }
+
     .divider {
       border: none;
       border-top: 1px solid rgba(255,255,255,0.05);
@@ -738,7 +742,7 @@
       .header { flex-direction: column; align-items: flex-start; }
       .header-right { width: 100%; text-align: left; }
       .report-footer { flex-direction: column; align-items: flex-start; }
-      .footer-name, .footer-web { justify-content: flex-start; text-align: left; }
+      .footer-name, .footer-web, .footer-right-block { justify-content: flex-start; text-align: left; align-items: flex-start; }
     }
 
     @media (max-width: 760px) {
@@ -851,13 +855,14 @@
             Past performance is not indicative of future results. Consult your financial advisor before making investment decisions.
           </div>
 
-        <div class="footer-right-block">
-  <div class="footer-contact">
-<img src="whats.png" class="whatsapp-icon-img" alt="WhatsApp">    <span>042-32300007</span>
-  </div>
-  <div class="footer-name"><span class="dot"></span> Youngs Capital Research</div>
-  <div class="footer-web">youngscapital.pk</div>
-</div>
+          <div class="footer-right-block">
+            <div class="footer-contact">
+              <img src="whats.png" class="whatsapp-icon-img" alt="WhatsApp">
+              <span>042-32300007</span>
+            </div>
+            <div class="footer-name"><span class="dot"></span> Youngs Capital Research</div>
+            <div class="footer-web">youngscapital.pk</div>
+          </div>
         </div>
       </div>
     </div>
@@ -881,7 +886,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
         <div>
           <label class="field-label">Date</label>
-          <input class="field-input" id="in-date" type="text" placeholder="e.g. Wednesday, 22 April 2026">
+          <input class="field-input" id="in-date" type="date">
         </div>
         <div>
           <label class="field-label">Report Number</label>
@@ -939,6 +944,24 @@
 
     let data = JSON.parse(localStorage.getItem('yc_data') || JSON.stringify(defaultData));
 
+    function formatDateDisplay(value) {
+      if (!value) return '';
+      const date = new Date(value + 'T00:00:00');
+      return date.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function formatDateInputValue(displayText) {
+      if (!displayText) return '';
+      const parsed = new Date(displayText);
+      if (Number.isNaN(parsed.getTime())) return '';
+      return parsed.toISOString().split('T')[0];
+    }
+
     function normalizeStock(s) {
       return {
         sym: (s.sym || '').toUpperCase().trim(),
@@ -967,13 +990,7 @@
 
     function touchDateTimeStamp() {
       const now = new Date();
-      const dateText = now.toLocaleDateString('en-GB', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
-      document.getElementById('in-date').value = dateText;
+      document.getElementById('in-date').value = now.toISOString().split('T')[0];
     }
 
     async function callApi(path) {
@@ -1270,7 +1287,7 @@
     }
 
     function populateForm() {
-      document.getElementById('in-date').value = data.date;
+      document.getElementById('in-date').value = formatDateInputValue(data.date);
       document.getElementById('in-ref').value = data.ref;
       document.getElementById('in-closing').value = data.closing;
       document.getElementById('in-t1').value = data.t1;
@@ -1318,7 +1335,7 @@
     }
 
     function updateReport(showToast = true) {
-      data.date = document.getElementById('in-date').value;
+      data.date = formatDateDisplay(document.getElementById('in-date').value);
       data.ref = document.getElementById('in-ref').value;
       data.closing = document.getElementById('in-closing').value;
       data.t1 = document.getElementById('in-t1').value;
@@ -1354,6 +1371,12 @@
         setTimeout(() => toast.classList.remove('show'), 2500);
       }
     }
+
+    document.getElementById('in-date').addEventListener('change', function () {
+      const formatted = formatDateDisplay(this.value);
+      data.date = formatted;
+      renderReport();
+    });
 
     data.stocks = data.stocks.map(normalizeStock);
     populateForm();
