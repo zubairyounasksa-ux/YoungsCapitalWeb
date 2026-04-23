@@ -19,6 +19,8 @@
       --green-soft: rgba(102, 200, 138, 0.14);
       --red: #f07178;
       --red-soft: rgba(240, 113, 120, 0.14);
+      --blue: #5b88ff;
+      --blue-soft: rgba(91, 136, 255, 0.14);
       --shadow-lg: 0 24px 70px rgba(0,0,0,0.38);
       --shadow-md: 0 12px 34px rgba(0,0,0,0.24);
     }
@@ -533,11 +535,23 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .single-fetch-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
       margin-bottom: 18px;
     }
 
-    .fetch-btn {
-      background: linear-gradient(180deg, rgba(91,136,255,0.24), rgba(91,136,255,0.16));
+    .single-symbol-input {
+      width: 180px;
+    }
+
+    .fetch-btn,
+    .pdf-btn {
       border: 1px solid rgba(91,136,255,0.32);
       color: #eaf1ff;
       font-size: 13px;
@@ -548,12 +562,27 @@
       transition: all 0.18s ease;
     }
 
+    .fetch-btn {
+      background: linear-gradient(180deg, rgba(91,136,255,0.24), rgba(91,136,255,0.16));
+    }
+
     .fetch-btn:hover {
       background: linear-gradient(180deg, rgba(91,136,255,0.32), rgba(91,136,255,0.20));
       transform: translateY(-1px);
     }
 
-    .fetch-btn:disabled {
+    .pdf-btn {
+      background: linear-gradient(180deg, rgba(214,174,82,0.26), rgba(214,174,82,0.16));
+      border-color: rgba(214,174,82,0.30);
+    }
+
+    .pdf-btn:hover {
+      background: linear-gradient(180deg, rgba(214,174,82,0.34), rgba(214,174,82,0.22));
+      transform: translateY(-1px);
+    }
+
+    .fetch-btn:disabled,
+    .pdf-btn:disabled {
       opacity: 0.65;
       cursor: wait;
       transform: none;
@@ -719,7 +748,7 @@
   <div class="wrapper">
 
     <div class="report-shell">
-      <div class="report">
+      <div class="report" id="report-card">
         <div class="header">
           <div class="logo-area">
             <img src="logo.png" alt="Youngs Capital" style="height: 52px; width: auto;" />
@@ -812,6 +841,12 @@
       <div class="fetch-tools">
         <button class="fetch-btn" id="fetch-prices-btn" onclick="fetchLatestPrices()">Fetch Latest Prices</button>
         <button class="fetch-btn" id="fetch-kse-btn" onclick="fetchKSEOnly()">Refresh KSE100 Only</button>
+        <button class="pdf-btn" id="export-pdf-btn" onclick="exportReportPDF()">Export PDF</button>
+      </div>
+
+      <div class="single-fetch-row">
+        <input class="field-input single-symbol-input" id="single-symbol-input" placeholder="e.g. SAZEW" />
+        <button class="fetch-btn" id="fetch-single-btn" onclick="fetchSingleSymbolPrice()">Fetch Single Symbol</button>
         <div class="fetch-status" id="fetch-status"></div>
       </div>
 
@@ -978,10 +1013,123 @@
         }
       } catch (error) {
         console.error(error);
-        setFetchStatus('Price fetch failed. Make sure server.js is running on port 3000.', 'error');
+        setFetchStatus('Price fetch failed.', 'error');
       } finally {
         button.disabled = false;
       }
+    }
+
+    async function fetchSingleSymbolPrice() {
+      const btn = document.getElementById('fetch-single-btn');
+      const input = document.getElementById('single-symbol-input');
+      const symbol = input.value.trim().toUpperCase();
+
+      if (!symbol) {
+        setFetchStatus('Enter a symbol first, e.g. SAZEW.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      setFetchStatus(`Fetching ${symbol}...`, '');
+
+      try {
+        const result = await callApi(`/api/psx/prices?symbols=${encodeURIComponent(symbol)}`);
+        const close = result.symbols && result.symbols[symbol];
+
+        if (!close) {
+          setFetchStatus(`Could not fetch ${symbol}.`, 'error');
+          return;
+        }
+
+        let matched = false;
+        document.querySelectorAll('.stock-row').forEach(row => {
+          const rowSymbol = row.querySelector('.sr-sym').value.trim().toUpperCase();
+          if (rowSymbol === symbol) {
+            row.querySelector('.sr-close').value = close;
+            matched = true;
+          }
+        });
+
+        if (matched) {
+          touchDateTimeStamp();
+          updateReport(false);
+          setFetchStatus(`${symbol} close updated successfully.`, 'success');
+        } else {
+          setFetchStatus(`${symbol} close is ${close}. Symbol not found in rows.`, 'success');
+        }
+      } catch (error) {
+        console.error(error);
+        setFetchStatus(`Failed to fetch ${symbol}.`, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function exportReportPDF() {
+      updateReport(false);
+
+      const reportHtml = document.getElementById('report-card').outerHTML;
+      const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+        .map(el => el.outerHTML)
+        .join('\n');
+
+      const printWindow = window.open('', '_blank', 'width=1400,height=900');
+      if (!printWindow) {
+        setFetchStatus('Popup blocked. Please allow popups for PDF export.', 'error');
+        return;
+      }
+
+      printWindow.document.open();
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Youngs Capital Report PDF</title>
+          ${styles}
+          <style>
+            body {
+              background: #ffffff !important;
+              padding: 24px !important;
+              margin: 0 !important;
+            }
+            .wrapper,
+            .report-shell {
+              max-width: 100% !important;
+              margin: 0 !important;
+            }
+            .report-shell {
+              box-shadow: none !important;
+            }
+            @page {
+              size: A4 landscape;
+              margin: 10mm;
+            }
+            @media print {
+              body {
+                padding: 0 !important;
+                background: #ffffff !important;
+              }
+              .report-shell {
+                break-inside: avoid;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          ${reportHtml}
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+
+      printWindow.onload = () => {
+        setTimeout(() => {
+          printWindow.focus();
+          printWindow.print();
+        }, 500);
+      };
     }
 
     function addStockRow(d) {
