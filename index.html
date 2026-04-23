@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Youngs Capital – Technical Calls of the Day</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --text: #edf3ff;
+      --muted: #a4b0c8;
+      --muted-2: #73819c;
+      --gold: #d6ae52;
+      --gold-soft: rgba(214, 174, 82, 0.16);
+      --green: #66c88a;
+      --green-soft: rgba(102, 200, 138, 0.14);
+      --red: #f07178;
+      --red-soft: rgba(240, 113, 120, 0.14);
+      --shadow-lg: 0 24px 70px rgba(0,0,0,0.38);
+      --shadow-md: 0 12px 34px rgba(0,0,0,0.24);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(91,136,255,0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(102,200,138,0.06), transparent 24%),
+        linear-gradient(180deg, #04070d 0%, #08101b 100%);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 30px 16px 60px;
+      color: var(--text);
+    }
+
+    .wrapper {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      max-width: 1140px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .report-shell {
+      position: relative;
+      border-radius: 28px;
+      padding: 1px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(214,174,82,0.28) 0%,
+          rgba(91,136,255,0.12) 34%,
+          rgba(102,200,138,0.10) 68%,
+          rgba(255,255,255,0.05) 100%
+        );
+      box-shadow: var(--shadow-lg);
+    }
+
+    .report {
+      background:
+        linear-gradient(rgba(6, 11, 23, 0.84), rgba(6, 11, 23, 0.92)),
+        url("background.png") center center / cover no-repeat;
+      border-radius: 27px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+    }
+
+    .header {
+      padding: 30px 30px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background:
+        linear-gradient(90deg, rgba(91,136,255,0.08), rgba(214,174,82,0.03) 45%, rgba(102,200,138,0.04));
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .header-right {
+      text-align: right;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      min-width: 200px;
+    }
+
+    .report-date {
+      font-size: 15px;
+      color: #ffffff;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .report-ref {
+      font-size: 11px;
+      color: rgba(255,255,255,0.84);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .banner {
+      margin: 0 30px;
+      margin-top: 18px;
+      background:
+        linear-gradient(90deg, rgba(214,174,82,0.18), rgba(255,255,255,0.05));
+      border: 1px solid rgba(214,174,82,0.20);
+      border-radius: 22px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .banner-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fffaf0;
+      letter-spacing: -0.02em;
+    }
+
+    .banner-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .body {
+      padding: 28px 30px 30px;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--gold), rgba(214,174,82,0.14));
+    }
+
+    .stat-card.stoploss::before {
+      background: linear-gradient(180deg, var(--red), rgba(240,113,120,0.18));
+    }
+
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: #8f9ab2;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 40px;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-card.stoploss .stat-value {
+      color: var(--red);
+    }
+
+    .market-view {
+      font-size: 17px;
+      line-height: 1.9;
+      color: #e3e9f5;
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 4px solid var(--gold);
+      border-radius: 18px;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .market-view strong {
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .stocks-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .pkr-note {
+      font-size: 11px;
+      color: rgba(255,255,255,0.72);
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      background:
+        linear-gradient(180deg, rgba(8,15,28,0.72), rgba(8,15,28,0.86));
+      box-shadow: 0 16px 40px rgba(0,0,0,0.24);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    thead th {
+      background: rgba(255,255,255,0.025);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: rgba(255,255,255,0.70);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    thead th.r {
+      text-align: right;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: rgba(255,255,255,0.012);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+
+    tbody tr:hover {
+      background: rgba(91,136,255,0.07);
+    }
+
+    tbody td {
+      padding: 24px 20px;
+      font-size: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: middle;
+      color: #dce5f5;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .symbol-cell {
+      padding-right: 8px;
+    }
+
+    .symbol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .symbol {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      border-left: 4px solid var(--green);
+      padding-left: 12px;
+      letter-spacing: -0.02em;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .islamic-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(214,174,82,0.14);
+      border: 1px solid rgba(214,174,82,0.28);
+      font-size: 15px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 130px;
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid rgba(102,200,138,0.22);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 16px;
+      white-space: nowrap;
+    }
+
+    .badge.sell {
+      background: var(--red-soft);
+      color: var(--red);
+      border-color: rgba(240,113,120,0.20);
+    }
+
+    .badge.hold {
+      background: var(--gold-soft);
+      color: var(--gold);
+      border-color: rgba(214,174,82,0.20);
+    }
+
+    td.num,
+    td.tgt,
+    td.stop {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    td.num {
+      color: #dce5f5;
+      padding-left: 26px;
+    }
+
+    td.tgt {
+      color: #82e6b7;
+      font-weight: 600;
+      padding-left: 26px;
+    }
+
+    td.stop {
+      color: #ff8288;
+      font-weight: 600;
+      padding-left: 26px;
+    }
+
+    td.note {
+      font-size: 15px;
+      color: #bcc8dd;
+      font-style: italic;
+      line-height: 1.6;
+      padding-left: 26px;
+    }
+
+    .report-footer {
+      padding: 18px 30px 22px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.012);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-top: 18px;
+    }
+
+    .disclaimer {
+      font-size: 15px;
+      color: rgba(255,255,255,0.94);
+      max-width: 760px;
+      line-height: 1.8;
+    }
+
+    .footer-name {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 12px;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px rgba(214,174,82,0.45);
+    }
+
+    .footer-web {
+      font-size: 11px;
+      color: rgba(255,255,255,0.82);
+      text-align: right;
+    }
+
+    .edit-card {
+      background: linear-gradient(180deg, rgba(18,29,49,0.95), rgba(10,16,28,0.98));
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 24px;
+      padding: 28px 30px;
+      margin-top: 22px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .edit-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.68);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .field-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 12px 14px;
+      outline: none;
+      transition: all 0.18s ease;
+    }
+
+    .field-input:focus {
+      border-color: rgba(214,174,82,0.55);
+      box-shadow: 0 0 0 4px rgba(214,174,82,0.10);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .field-input::placeholder {
+      color: #7c89a5;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin: 22px 0;
+    }
+
+    .stocks-edit-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .fetch-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .fetch-btn {
+      background: linear-gradient(180deg, rgba(91,136,255,0.24), rgba(91,136,255,0.16));
+      border: 1px solid rgba(91,136,255,0.32);
+      color: #eaf1ff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .fetch-btn:hover {
+      background: linear-gradient(180deg, rgba(91,136,255,0.32), rgba(91,136,255,0.20));
+      transform: translateY(-1px);
+    }
+
+    .fetch-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none;
+    }
+
+    .fetch-status {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      min-height: 20px;
+    }
+
+    .fetch-status.error {
+      color: #ff9aa0;
+    }
+
+    .fetch-status.success {
+      color: #82e6b7;
+    }
+
+    .stock-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr 0.9fr 0.9fr 0.9fr 0.9fr 1.7fr 110px 40px;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-start;
+      padding: 0 6px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.84);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .checkbox-wrap input {
+      width: 16px;
+      height: 16px;
+      accent-color: #d6ae52;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-wrap span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .add-row-btn {
+      background: rgba(255,255,255,0.025);
+      border: 1px dashed rgba(214,174,82,0.30);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 22px;
+      transition: all 0.18s ease;
+    }
+
+    .add-row-btn:hover {
+      background: rgba(214,174,82,0.08);
+      border-color: rgba(214,174,82,0.55);
+    }
+
+    .del-btn {
+      background: rgba(240,113,120,0.10);
+      border: 1px solid rgba(240,113,120,0.25);
+      color: var(--red);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      height: 40px;
+      width: 40px;
+      line-height: 1;
+      transition: all 0.18s ease;
+    }
+
+    .del-btn:hover {
+      background: rgba(240,113,120,0.16);
+    }
+
+    .update-btn {
+      background: linear-gradient(180deg, #e0ba61 0%, #cfa24b 100%);
+      border: none;
+      color: #10151f;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 14px 34px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(214,174,82,0.18);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .update-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(214,174,82,0.24);
+    }
+
+    .saved-toast {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: 14px;
+      font-size: 13px;
+      color: var(--green);
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .saved-toast.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 980px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stock-row { grid-template-columns: 1fr 1fr; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .header-right { width: 100%; text-align: left; }
+      .report-footer { flex-direction: column; align-items: flex-start; }
+      .footer-name, .footer-web { justify-content: flex-start; text-align: left; }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 18px 10px 40px; }
+
+      .header, .body, .report-footer, .edit-card, .banner {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .banner {
+        margin-left: 18px;
+        margin-right: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stat-grid { grid-template-columns: 1fr; }
+      .stocks-header { flex-direction: column; align-items: flex-start; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 980px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-title">Youngs Capital — Daily Report</div>
+  </div>
+
+  <div class="wrapper">
+
+    <div class="report-shell">
+      <div class="report">
+        <div class="header">
+          <div class="logo-area">
+            <img src="logo.png" alt="Youngs Capital" style="height: 52px; width: auto;" />
+          </div>
+
+          <div class="header-right">
+            <div class="report-date" id="disp-date"></div>
+            <div class="report-ref" id="disp-ref"></div>
+          </div>
+        </div>
+
+        <div class="banner">
+          <div class="banner-title">Technical Calls of the Day</div>
+          <div class="banner-label">KSE Equities</div>
+        </div>
+
+        <div class="body">
+          <div class="section-label">KSE-100 Index Overview</div>
+
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Closing</div>
+              <div class="stat-value" id="disp-closing"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Target 1</div>
+              <div class="stat-value" id="disp-t1"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Target 2</div>
+              <div class="stat-value" id="disp-t2"></div>
+            </div>
+            <div class="stat-card stoploss">
+              <div class="stat-label">Stoploss</div>
+              <div class="stat-value" id="disp-sl"></div>
+            </div>
+          </div>
+
+          <div class="market-view" id="disp-mv"></div>
+
+          <div class="stocks-header">
+            <div class="section-label" style="margin-bottom:0">Stock Calls</div>
+            <div class="pkr-note">All figures in PKR</div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <colgroup>
+                <col style="width:19%">
+                <col style="width:16%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:10%">
+                <col style="width:25%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Strategy</th>
+                  <th class="r">Close</th>
+                  <th class="r">Target 1</th>
+                  <th class="r">Target 2</th>
+                  <th class="r">Stoploss</th>
+                  <th>Analyst Note</th>
+                </tr>
+              </thead>
+              <tbody id="disp-stocks"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="report-footer">
+          <div class="disclaimer">
+            Disclaimer: This report is for informational purposes only and does not constitute investment advice.
+            Past performance is not indicative of future results. Consult your financial advisor before making investment decisions.
+          </div>
+
+          <div>
+            <div class="footer-name"><span class="dot"></span> Youngs Capital Research</div>
+            <div class="footer-web">youngscapital.pk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-card">
+      <div class="edit-card-title">Daily Edit Fields</div>
+
+      <div class="fetch-tools">
+        <button class="fetch-btn" id="fetch-prices-btn" onclick="fetchLatestPrices()">Fetch Latest Prices</button>
+        <button class="fetch-btn" id="fetch-kse-btn" onclick="fetchKSEOnly()">Refresh KSE100 Only</button>
+        <div class="fetch-status" id="fetch-status"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <label class="field-label">Date</label>
+          <input class="field-input" id="in-date" type="text" placeholder="e.g. Wednesday, 22 April 2026">
+        </div>
+        <div>
+          <label class="field-label">Report Number</label>
+          <input class="field-input" id="in-ref" type="text" placeholder="e.g. REP-085">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+        <div><label class="field-label">Closing</label><input class="field-input" id="in-closing" placeholder="172,197"></div>
+        <div><label class="field-label">Target 1</label><input class="field-input" id="in-t1" placeholder="174,520"></div>
+        <div><label class="field-label">Target 2</label><input class="field-input" id="in-t2" placeholder="179,280"></div>
+        <div><label class="field-label">Stoploss</label><input class="field-input" id="in-sl" placeholder="169,230"></div>
+      </div>
+
+      <div style="margin-bottom:0">
+        <label class="field-label">Market View</label>
+        <textarea class="field-input" id="in-mv" rows="3" placeholder="The KSE-100 posted..."></textarea>
+      </div>
+
+      <hr class="divider">
+
+      <div class="stocks-edit-label">Stock Calls</div>
+      <div id="stock-rows"></div>
+
+      <button class="add-row-btn" onclick="addStockRow()">+ Add Stock Row</button>
+
+      <div style="display:flex;align-items:center;">
+        <button class="update-btn" onclick="updateReport()">Update Report</button>
+        <span class="saved-toast" id="saved-toast">✓ Report updated!</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000';
+
+    const defaultData = {
+      date: "Tuesday, 21 April 2026",
+      ref: "REP-084",
+      closing: "172,197",
+      t1: "174,520",
+      t2: "179,280",
+      sl: "169,230",
+      mv: "The KSE-100 posted a loss of 1,742 points, closing at 172,197. Support is expected at 169,226 — a break below targets the 50-DMA at 162,770. A break above 174,524 (yesterday's high) extends gains towards 179,280. Momentum indicators are mixed. Stay cautious on the higher side and wait for dips.",
+      stocks: [
+        { sym:"UBL", cls:"badge", strat:"Buy on dips", close:"415.84", t1:"421.00", t2:"430.00", sl:"397.00", note:"Post breakout consolidation likely", islamic:false },
+        { sym:"PAEL", cls:"badge", strat:"Buy on dips", close:"43.51", t1:"44.50", t2:"47.30", sl:"41.30", note:"Support at 50-DMA", islamic:false },
+        { sym:"OGDC", cls:"badge", strat:"Buy on dips", close:"326.65", t1:"331.00", t2:"336.20", sl:"316.10", note:"Upside to continue", islamic:false },
+        { sym:"ISL", cls:"badge", strat:"Buy on dips", close:"88.12", t1:"92.00", t2:"94.20", sl:"86.00", note:"Recovery trend intact", islamic:false }
+      ]
+    };
+
+    let data = JSON.parse(localStorage.getItem('yc_data') || JSON.stringify(defaultData));
+
+    function normalizeStock(s) {
+      return {
+        sym: (s.sym || '').toUpperCase().trim(),
+        cls: s.cls || 'badge',
+        strat: s.strat || stratLabel(s.cls || 'badge'),
+        close: s.close || '',
+        t1: s.t1 || '',
+        t2: s.t2 || '',
+        sl: s.sl || '',
+        note: s.note || '',
+        islamic: !!s.islamic
+      };
+    }
+
+    function stratLabel(cls) {
+      if (cls.includes('sell')) return 'Sell';
+      if (cls.includes('hold')) return 'Hold';
+      return 'Buy on dips';
+    }
+
+    function setFetchStatus(message, type = '') {
+      const el = document.getElementById('fetch-status');
+      el.textContent = message;
+      el.className = `fetch-status ${type}`.trim();
+    }
+
+    function touchDateTimeStamp() {
+      const now = new Date();
+      const dateText = now.toLocaleDateString('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+      document.getElementById('in-date').value = dateText;
+    }
+
+    async function callApi(path) {
+      const response = await fetch(`${API_BASE}${path}`, { cache: 'no-store' });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Request failed: ${response.status}`);
+      }
+      return await response.json();
+    }
+
+    async function fetchKSEOnly() {
+      const btn = document.getElementById('fetch-kse-btn');
+      btn.disabled = true;
+      setFetchStatus('Fetching KSE100...', '');
+
+      try {
+        const result = await callApi('/api/psx/kse100');
+        document.getElementById('in-closing').value = result.close;
+        touchDateTimeStamp();
+        updateReport(false);
+        setFetchStatus('KSE100 refreshed successfully.', 'success');
+      } catch (error) {
+        console.error(error);
+        setFetchStatus('Could not fetch KSE100 closing.', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function fetchLatestPrices() {
+      const button = document.getElementById('fetch-prices-btn');
+      const rows = Array.from(document.querySelectorAll('.stock-row'));
+      const symbols = rows
+        .map(row => row.querySelector('.sr-sym').value.trim().toUpperCase())
+        .filter(Boolean);
+
+      if (!symbols.length) {
+        setFetchStatus('Add at least one symbol first.', 'error');
+        return;
+      }
+
+      button.disabled = true;
+      setFetchStatus('Fetching latest KSE100 and stock closes...', '');
+
+      try {
+        const result = await callApi(`/api/psx/prices?symbols=${encodeURIComponent(symbols.join(','))}`);
+
+        if (result.kse100Close) {
+          document.getElementById('in-closing').value = result.kse100Close;
+        }
+
+        rows.forEach(row => {
+          const sym = row.querySelector('.sr-sym').value.trim().toUpperCase();
+          if (result.symbols && result.symbols[sym]) {
+            row.querySelector('.sr-close').value = result.symbols[sym];
+          }
+        });
+
+        touchDateTimeStamp();
+        updateReport(false);
+
+        if (result.failed && result.failed.length) {
+          setFetchStatus(`Fetched most prices. Failed: ${result.failed.join(', ')}`, 'error');
+        } else {
+          setFetchStatus('Latest KSE100 and stock closes fetched successfully.', 'success');
+        }
+      } catch (error) {
+        console.error(error);
+        setFetchStatus('Price fetch failed. Make sure server.js is running on port 3000.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    function addStockRow(d) {
+      d = normalizeStock(d || {});
+      const div = document.createElement('div');
+      div.className = 'stock-row';
+      div.innerHTML = `
+        <input class="field-input sr-sym" style="font-size:13px;padding:8px 10px" value="${d.sym}" placeholder="Symbol">
+        <select class="field-input sr-cls" style="font-size:12px;padding:8px 10px">
+          <option value="badge" ${d.cls==='badge'?'selected':''}>Buy on dips</option>
+          <option value="badge sell" ${d.cls==='badge sell'?'selected':''}>Sell</option>
+          <option value="badge hold" ${d.cls==='badge hold'?'selected':''}>Hold</option>
+        </select>
+        <input class="field-input sr-close" style="font-size:13px;padding:8px 10px" value="${d.close}" placeholder="Close">
+        <input class="field-input sr-t1" style="font-size:13px;padding:8px 10px" value="${d.t1}" placeholder="T1">
+        <input class="field-input sr-t2" style="font-size:13px;padding:8px 10px" value="${d.t2}" placeholder="T2">
+        <input class="field-input sr-sl" style="font-size:13px;padding:8px 10px" value="${d.sl}" placeholder="SL">
+        <input class="field-input sr-note" style="font-size:13px;padding:8px 10px" value="${d.note}" placeholder="Analyst note">
+        <label class="checkbox-wrap">
+          <input type="checkbox" class="sr-islamic" ${d.islamic ? 'checked' : ''}>
+          <span>Islamic</span>
+        </label>
+        <button class="del-btn" onclick="this.parentElement.remove()">×</button>
+      `;
+      document.getElementById('stock-rows').appendChild(div);
+    }
+
+    function populateForm() {
+      document.getElementById('in-date').value = data.date;
+      document.getElementById('in-ref').value = data.ref;
+      document.getElementById('in-closing').value = data.closing;
+      document.getElementById('in-t1').value = data.t1;
+      document.getElementById('in-t2').value = data.t2;
+      document.getElementById('in-sl').value = data.sl;
+      document.getElementById('in-mv').value = data.mv;
+      document.getElementById('stock-rows').innerHTML = '';
+      data.stocks.map(normalizeStock).forEach(s => addStockRow(s));
+    }
+
+    function renderReport() {
+      document.getElementById('disp-date').textContent = data.date;
+      document.getElementById('disp-ref').textContent = data.ref;
+      document.getElementById('disp-closing').textContent = data.closing;
+      document.getElementById('disp-t1').textContent = data.t1;
+      document.getElementById('disp-t2').textContent = data.t2;
+      document.getElementById('disp-sl').textContent = data.sl;
+      document.getElementById('disp-mv').innerHTML = '<strong>Market view:</strong> ' + data.mv;
+
+      const tbody = document.getElementById('disp-stocks');
+      tbody.innerHTML = '';
+
+      data.stocks.map(normalizeStock).forEach(s => {
+        const islamicBadge = s.islamic
+          ? `<span class="islamic-badge" title="Islamic stock">🕌</span>`
+          : '';
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="symbol-cell">
+              <div class="symbol-wrap">
+                <span class="symbol">${s.sym}</span>
+                ${islamicBadge}
+              </div>
+            </td>
+            <td><span class="${s.cls}">${s.strat}</span></td>
+            <td class="num">${s.close}</td>
+            <td class="tgt">${s.t1}</td>
+            <td class="tgt">${s.t2}</td>
+            <td class="stop">${s.sl}</td>
+            <td class="note">${s.note}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function updateReport(showToast = true) {
+      data.date = document.getElementById('in-date').value;
+      data.ref = document.getElementById('in-ref').value;
+      data.closing = document.getElementById('in-closing').value;
+      data.t1 = document.getElementById('in-t1').value;
+      data.t2 = document.getElementById('in-t2').value;
+      data.sl = document.getElementById('in-sl').value;
+      data.mv = document.getElementById('in-mv').value;
+      data.stocks = [];
+
+      document.querySelectorAll('.stock-row').forEach(row => {
+        const cls = row.querySelector('.sr-cls').value;
+        data.stocks.push({
+          sym: row.querySelector('.sr-sym').value,
+          cls,
+          strat: stratLabel(cls),
+          close: row.querySelector('.sr-close').value,
+          t1: row.querySelector('.sr-t1').value,
+          t2: row.querySelector('.sr-t2').value,
+          sl: row.querySelector('.sr-sl').value,
+          note: row.querySelector('.sr-note').value,
+          islamic: row.querySelector('.sr-islamic').checked
+        });
+      });
+
+      data.stocks = data.stocks.map(normalizeStock);
+
+      localStorage.setItem('yc_data', JSON.stringify(data));
+      renderReport();
+
+      if (showToast) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const toast = document.getElementById('saved-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      }
+    }
+
+    data.stocks = data.stocks.map(normalizeStock);
+    populateForm();
+    renderReport();
+  </script>
+</body>
+</html>
