@@ -4,8 +4,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-const PORT = 3000;
-
+const PORT = process.env.PORT || 3000;
 function formatNumber(value, decimals = 2) {
   const num = Number(String(value).replace(/,/g, ''));
   if (!Number.isFinite(num)) return value;
