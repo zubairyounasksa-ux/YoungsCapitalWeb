@@ -1131,13 +1131,40 @@
         }, 500);
       };
     }
+async function autofillCloseForRow(symbolInput) {
+  const symbol = symbolInput.value.trim().toUpperCase();
+  if (!symbol) return;
 
+  const row = symbolInput.closest('.stock-row');
+  if (!row) return;
+
+  const closeInput = row.querySelector('.sr-close');
+  if (!closeInput) return;
+
+  try {
+    setFetchStatus(`Fetching ${symbol}...`, '');
+
+    const result = await callApi(`/api/psx/prices?symbols=${encodeURIComponent(symbol)}`);
+    const close = result.symbols && result.symbols[symbol];
+
+    if (close) {
+      closeInput.value = close;
+      setFetchStatus(`${symbol} close filled automatically.`, 'success');
+      updateReport(false);
+    } else {
+      setFetchStatus(`Could not fetch ${symbol}.`, 'error');
+    }
+  } catch (error) {
+    console.error(error);
+    setFetchStatus(`Failed to fetch ${symbol}.`, 'error');
+  }
+}
     function addStockRow(d) {
       d = normalizeStock(d || {});
       const div = document.createElement('div');
       div.className = 'stock-row';
       div.innerHTML = `
-        <input class="field-input sr-sym" style="font-size:13px;padding:8px 10px" value="${d.sym}" placeholder="Symbol">
+       <input class="field-input sr-sym" style="font-size:13px;padding:8px 10px" value="${d.sym}" placeholder="Symbol" onblur="autofillCloseForRow(this)">
         <select class="field-input sr-cls" style="font-size:12px;padding:8px 10px">
           <option value="badge" ${d.cls==='badge'?'selected':''}>Buy on dips</option>
           <option value="badge sell" ${d.cls==='badge sell'?'selected':''}>Sell</option>
