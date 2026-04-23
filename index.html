@@ -842,6 +842,7 @@
         <button class="fetch-btn" id="fetch-prices-btn" onclick="fetchLatestPrices()">Fetch Latest Prices</button>
         <button class="fetch-btn" id="fetch-kse-btn" onclick="fetchKSEOnly()">Refresh KSE100 Only</button>
         <button class="pdf-btn" id="export-pdf-btn" onclick="exportReportPDF()">Export PDF</button>
+        <button class="pdf-btn" id="screenshot-btn" onclick="downloadScreenshot()">Download Screenshot</button>
       </div>
 
       <div class="single-fetch-row">
@@ -887,6 +888,8 @@
     </div>
 
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
     const API_BASE = 'https://yc-psx-api.onrender.com';
@@ -1175,6 +1178,42 @@
           printWindow.print();
         }, 500);
       };
+    }
+
+    async function downloadScreenshot() {
+      updateReport(false);
+
+      const reportCard = document.getElementById('report-card');
+      const button = document.getElementById('screenshot-btn');
+
+      if (!reportCard) {
+        setFetchStatus('Report card not found.', 'error');
+        return;
+      }
+
+      try {
+        button.disabled = true;
+        setFetchStatus('Generating screenshot...', '');
+
+        const canvas = await html2canvas(reportCard, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: null
+        });
+
+        const link = document.createElement('a');
+        const ref = document.getElementById('in-ref').value || 'report';
+        link.download = `${ref}-screenshot.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        setFetchStatus('Screenshot downloaded successfully.', 'success');
+      } catch (error) {
+        console.error(error);
+        setFetchStatus('Failed to generate screenshot.', 'error');
+      } finally {
+        button.disabled = false;
+      }
     }
 
     function addStockRow(d) {
